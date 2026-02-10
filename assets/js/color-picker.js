@@ -9,7 +9,7 @@
     'use strict';
 
     // Color Picker Manager
-    class DarkupColorPicker {
+    class ThemeChangerColorPicker {
         constructor() {
             this.colors = {};
             this.init();
@@ -17,7 +17,7 @@
 
         init() {
             // Initialize color pickers when on admin page
-            if ($('.darkup-color-picker').length) {
+            if ($('.theme-changer-color-picker').length) {
                 this.initializeColorPickers();
                 this.bindEvents();
             }
@@ -25,7 +25,7 @@
 
         initializeColorPickers() {
             // Initialize WordPress color picker
-            $('.darkup-color-picker').wpColorPicker({
+            $('.theme-changer-color-picker').wpColorPicker({
                 change: (event, ui) => {
                     const colorKey = $(event.target).data('color-key');
                     this.colors[colorKey] = ui.color.toString();
@@ -41,37 +41,37 @@
             const self = this;
 
             // Save custom theme button
-            $('#darkup-save-custom-theme').on('click', function (e) {
+            $('#theme-changer-save-custom-theme').on('click', function (e) {
                 e.preventDefault();
                 self.saveCustomTheme();
             });
 
             // Delete custom theme button
-            $(document).on('click', '.darkup-delete-theme', function (e) {
+            $(document).on('click', '.theme-changer-delete-theme', function (e) {
                 e.preventDefault();
                 const themeId = $(this).data('theme-id');
                 self.deleteCustomTheme(themeId);
             });
 
             // Theme name input
-            $('#darkup-theme-name').on('input', function () {
+            $('#theme-changer-theme-name').on('input', function () {
                 self.validateForm();
             });
 
             // Mode selector for custom theme
-            $('.darkup-custom-mode-btn').on('click', function () {
-                $('.darkup-custom-mode-btn').removeClass('active');
+            $('.theme-changer-custom-mode-btn').on('click', function () {
+                $('.theme-changer-custom-mode-btn').removeClass('active');
                 $(this).addClass('active');
             });
         }
 
         updatePreview() {
             // Update preview area with current colors
-            const previewArea = $('#darkup-theme-preview');
+            const previewArea = $('#theme-changer-theme-preview');
 
             if (previewArea.length) {
                 const cssVars = Object.keys(this.colors).map(key => {
-                    return `--darkup-${key}: ${this.colors[key]};`;
+                    return `--theme-changer-${key}: ${this.colors[key]};`;
                 }).join('\n');
 
                 previewArea.attr('style', cssVars);
@@ -79,10 +79,10 @@
         }
 
         validateForm() {
-            const themeName = $('#darkup-theme-name').val().trim();
+            const themeName = $('#theme-changer-theme-name').val().trim();
             const hasColors = Object.keys(this.colors).length > 0;
 
-            const saveButton = $('#darkup-save-custom-theme');
+            const saveButton = $('#theme-changer-save-custom-theme');
 
             if (themeName && hasColors) {
                 saveButton.prop('disabled', false);
@@ -92,12 +92,12 @@
         }
 
         saveCustomTheme() {
-            const themeName = $('#darkup-theme-name').val().trim();
-            const themeMode = $('.darkup-custom-mode-btn.active').data('mode') || 'dark';
+            const themeName = $('#theme-changer-theme-name').val().trim();
+            const themeMode = $('.theme-changer-custom-mode-btn.active').data('mode') || 'dark';
 
             // Collect all color values
             const colors = {};
-            $('.darkup-color-picker').each(function () {
+            $('.theme-changer-color-picker').each(function () {
                 const colorKey = $(this).data('color-key');
                 const colorValue = $(this).val();
                 if (colorValue) {
@@ -116,15 +116,15 @@
             }
 
             // Show loading state
-            $('#darkup-save-custom-theme').prop('disabled', true).text('Saving...');
+            $('#theme-changer-save-custom-theme').prop('disabled', true).text('Saving...');
 
             // Send AJAX request
             $.ajax({
-                url: darkupAjax.ajaxurl,
+                url: themeChangerAjax.ajaxurl,
                 type: 'POST',
                 data: {
-                    action: 'darkup_save_custom_theme',
-                    nonce: darkupAjax.nonce,
+                    action: 'theme_changer_save_custom_theme',
+                    nonce: themeChangerAjax.nonce,
                     theme_name: themeName,
                     theme_colors: colors,
                     theme_mode: themeMode
@@ -147,7 +147,7 @@
                     this.showNotice('An error occurred while saving the theme', 'error');
                 },
                 complete: () => {
-                    $('#darkup-save-custom-theme').prop('disabled', false).text('Save Custom Theme');
+                    $('#theme-changer-save-custom-theme').prop('disabled', false).text('Save Custom Theme');
                 }
             });
         }
@@ -158,18 +158,18 @@
             }
 
             $.ajax({
-                url: darkupAjax.ajaxurl,
+                url: themeChangerAjax.ajaxurl,
                 type: 'POST',
                 data: {
-                    action: 'darkup_delete_custom_theme',
-                    nonce: darkupAjax.nonce,
+                    action: 'theme_changer_delete_custom_theme',
+                    nonce: themeChangerAjax.nonce,
                     theme_id: themeId
                 },
                 success: (response) => {
                     if (response.success) {
                         this.showNotice('Custom theme deleted successfully!', 'success');
                         // Remove theme card from DOM
-                        $(`.darkup-theme-card[data-theme-id="${themeId}"]`).fadeOut(300, function () {
+                        $(`.theme-changer-theme-card[data-theme-id="${themeId}"]`).fadeOut(300, function () {
                             $(this).remove();
                         });
                     } else {
@@ -184,8 +184,8 @@
         }
 
         resetForm() {
-            $('#darkup-theme-name').val('');
-            $('.darkup-color-picker').val('');
+            $('#theme-changer-theme-name').val('');
+            $('.theme-changer-color-picker').val('');
             this.colors = {};
             this.updatePreview();
         }
@@ -193,12 +193,12 @@
         showNotice(message, type = 'info') {
             const noticeClass = type === 'success' ? 'success' : (type === 'error' ? 'error' : '');
             const notice = $(`
-                <div class="darkup-notice ${noticeClass}" style="animation: slideDown 0.3s ease;">
+                <div class="theme-changer-notice ${noticeClass}" style="animation: slideDown 0.3s ease;">
                     ${message}
                 </div>
             `);
 
-            $('.darkup-admin-page').prepend(notice);
+            $('.theme-changer-admin-page').prepend(notice);
 
             // Auto-remove after 5 seconds
             setTimeout(() => {
@@ -211,7 +211,7 @@
 
     // Initialize when DOM is ready
     $(document).ready(function () {
-        new DarkupColorPicker();
+        new ThemeChangerColorPicker();
     });
 
 })(jQuery);

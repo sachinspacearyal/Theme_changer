@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name: Dark
- * Plugin URI: https://example.com/darkup
+ * Plugin Name: Theme Changer
+ * Plugin URI: https://example.com/theme-changer
  * Description: A WordPress plugin that provides default and custom dark/light theme functionality with automatic mode detection and user-customizable color schemes.
  * Version: 1.0.0
  * Author: Your Name
  * Author URI: https://example.com
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: darkup
+ * Text Domain: theme-changer
  */
 
 // Prevent direct access
@@ -17,24 +17,24 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('DARKUP_VERSION', '1.0.0');
-define('DARKUP_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('DARKUP_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('THEME_CHANGER_VERSION', '1.0.0');
+define('THEME_CHANGER_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('THEME_CHANGER_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 /**
  * Include required files
  */
-require_once DARKUP_PLUGIN_DIR . 'includes/default-themes.php';
-require_once DARKUP_PLUGIN_DIR . 'includes/custom-themes.php';
-require_once DARKUP_PLUGIN_DIR . 'includes/apply-theme.php';
+require_once THEME_CHANGER_PLUGIN_DIR . 'includes/default-themes.php';
+require_once THEME_CHANGER_PLUGIN_DIR . 'includes/custom-themes.php';
+require_once THEME_CHANGER_PLUGIN_DIR . 'includes/apply-theme.php';
 
 /**
  * Plugin activation hook
  */
-function darkup_activate() {
+function theme_changer_activate() {
     // Set default options on activation
-    if (!get_option('darkup_active_theme')) {
-        update_option('darkup_active_theme', array(
+    if (!get_option('theme_changer_active_theme')) {
+        update_option('theme_changer_active_theme', array(
             'type' => 'default',
             'id' => 'default-dark',
             'mode' => 'auto'
@@ -42,80 +42,80 @@ function darkup_activate() {
     }
     
     // Initialize custom themes option if it doesn't exist
-    if (!get_option('darkup_custom_themes')) {
-        update_option('darkup_custom_themes', array());
+    if (!get_option('theme_changer_custom_themes')) {
+        update_option('theme_changer_custom_themes', array());
     }
 }
-register_activation_hook(__FILE__, 'darkup_activate');
+register_activation_hook(__FILE__, 'theme_changer_activate');
 
 /**
  * Plugin deactivation hook
  */
-function darkup_deactivate() {
+function theme_changer_deactivate() {
     // Clean up if needed (optional)
     // We'll keep the options for now so users don't lose their themes
 }
-register_deactivation_hook(__FILE__, 'darkup_deactivate');
+register_deactivation_hook(__FILE__, 'theme_changer_deactivate');
 
 /**
  * Enqueue frontend styles and scripts
  */
-function darkup_enqueue_assets() {
+function theme_changer_enqueue_assets() {
     // Enqueue base CSS
     wp_enqueue_style(
-        'darkup-style',
-        DARKUP_PLUGIN_URL . 'assets/css/style.css',
+        'theme-changer-style',
+        THEME_CHANGER_PLUGIN_URL . 'assets/css/style.css',
         array(),
-        DARKUP_VERSION
+        THEME_CHANGER_VERSION
     );
     
     // Enqueue theme switcher script
     wp_enqueue_script(
-        'darkup-theme-switcher',
-        DARKUP_PLUGIN_URL . 'assets/js/theme-switcher.js',
+        'theme-changer-theme-switcher',
+        THEME_CHANGER_PLUGIN_URL . 'assets/js/theme-switcher.js',
         array('jquery'),
-        DARKUP_VERSION,
+        THEME_CHANGER_VERSION,
         true
     );
     
     // Enqueue color picker script (only on admin page)
-    if (is_admin() && isset($_GET['page']) && $_GET['page'] === 'darkup-settings') {
+    if (is_admin() && isset($_GET['page']) && $_GET['page'] === 'theme-changer-settings') {
         wp_enqueue_style('wp-color-picker');
         wp_enqueue_script(
-            'darkup-color-picker',
-            DARKUP_PLUGIN_URL . 'assets/js/color-picker.js',
+            'theme-changer-color-picker',
+            THEME_CHANGER_PLUGIN_URL . 'assets/js/color-picker.js',
             array('jquery', 'wp-color-picker'),
-            DARKUP_VERSION,
+            THEME_CHANGER_VERSION,
             true
         );
     }
     
     // Pass AJAX URL, nonce, and theme data to JavaScript
-    wp_localize_script('darkup-theme-switcher', 'darkupAjax', array(
+    wp_localize_script('theme-changer-theme-switcher', 'themeChangerAjax', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
-        'nonce' => wp_create_nonce('darkup_nonce'),
-        'defaultThemes' => darkup_get_default_themes(),
-        'customThemes' => darkup_get_custom_themes(),
-        'currentTheme' => darkup_get_current_theme_info()
+        'nonce' => wp_create_nonce('theme_changer_nonce'),
+        'defaultThemes' => theme_changer_get_default_themes(),
+        'customThemes' => theme_changer_get_custom_themes(),
+        'currentTheme' => theme_changer_get_current_theme_info()
     ));
 }
-add_action('wp_enqueue_scripts', 'darkup_enqueue_assets');
-add_action('admin_enqueue_scripts', 'darkup_enqueue_assets');
+add_action('wp_enqueue_scripts', 'theme_changer_enqueue_assets');
+add_action('admin_enqueue_scripts', 'theme_changer_enqueue_assets');
 
 /**
  * Apply the active theme
  */
-function darkup_apply_active_theme() {
-    darkup_apply_theme();
+function theme_changer_apply_active_theme() {
+    theme_changer_apply_theme();
 }
-add_action('wp_head', 'darkup_apply_active_theme');
-add_action('admin_head', 'darkup_apply_active_theme');
+add_action('wp_head', 'theme_changer_apply_active_theme');
+add_action('admin_head', 'theme_changer_apply_active_theme');
 
 /**
  * Register AJAX handlers for saving theme preferences
  */
-function darkup_save_theme_preference() {
-    check_ajax_referer('darkup_nonce', 'nonce');
+function theme_changer_save_theme_preference() {
+    check_ajax_referer('theme_changer_nonce', 'nonce');
     
     $theme_type = sanitize_text_field($_POST['theme_type']);
     $theme_id = sanitize_text_field($_POST['theme_id']);
@@ -127,18 +127,18 @@ function darkup_save_theme_preference() {
         'mode' => $mode
     );
     
-    update_option('darkup_active_theme', $active_theme);
+    update_option('theme_changer_active_theme', $active_theme);
     
     wp_send_json_success(array('message' => 'Theme preference saved successfully'));
 }
-add_action('wp_ajax_darkup_save_theme', 'darkup_save_theme_preference');
-add_action('wp_ajax_nopriv_darkup_save_theme', 'darkup_save_theme_preference');
+add_action('wp_ajax_theme_changer_save_theme', 'theme_changer_save_theme_preference');
+add_action('wp_ajax_nopriv_theme_changer_save_theme', 'theme_changer_save_theme_preference');
 
 /**
  * AJAX handler for saving custom themes
  */
-function darkup_save_custom_theme() {
-    check_ajax_referer('darkup_nonce', 'nonce');
+function theme_changer_save_custom_theme() {
+    check_ajax_referer('theme_changer_nonce', 'nonce');
     
     $theme_name = sanitize_text_field($_POST['theme_name']);
     $theme_colors = $_POST['theme_colors']; // Array of colors
@@ -150,7 +150,7 @@ function darkup_save_custom_theme() {
         $sanitized_colors[sanitize_key($key)] = sanitize_hex_color($color);
     }
     
-    $result = darkup_add_custom_theme($theme_name, $sanitized_colors, $theme_mode);
+    $result = theme_changer_add_custom_theme($theme_name, $sanitized_colors, $theme_mode);
     
     if ($result) {
         wp_send_json_success(array('message' => 'Custom theme saved successfully'));
@@ -158,17 +158,17 @@ function darkup_save_custom_theme() {
         wp_send_json_error(array('message' => 'Failed to save custom theme'));
     }
 }
-add_action('wp_ajax_darkup_save_custom_theme', 'darkup_save_custom_theme');
+add_action('wp_ajax_theme_changer_save_custom_theme', 'theme_changer_save_custom_theme');
 
 /**
  * AJAX handler for deleting custom themes
  */
-function darkup_delete_custom_theme() {
-    check_ajax_referer('darkup_nonce', 'nonce');
+function theme_changer_delete_custom_theme() {
+    check_ajax_referer('theme_changer_nonce', 'nonce');
     
     $theme_id = sanitize_text_field($_POST['theme_id']);
     
-    $result = darkup_remove_custom_theme($theme_id);
+    $result = theme_changer_remove_custom_theme($theme_id);
     
     if ($result) {
         wp_send_json_success(array('message' => 'Custom theme deleted successfully'));
@@ -176,36 +176,36 @@ function darkup_delete_custom_theme() {
         wp_send_json_error(array('message' => 'Failed to delete custom theme'));
     }
 }
-add_action('wp_ajax_darkup_delete_custom_theme', 'darkup_delete_custom_theme');
+add_action('wp_ajax_theme_changer_delete_custom_theme', 'theme_changer_delete_custom_theme');
 
 /**
  * Add admin menu page
  */
-function darkup_add_admin_menu() {
+function theme_changer_add_admin_menu() {
     add_menu_page(
-        'Darkup Settings',
-        'Darkup',
+        'Theme Changer Settings',
+        'Theme Changer',
         'manage_options',
-        'darkup-settings',
-        'darkup_render_admin_page',
+        'theme-changer-settings',
+        'theme_changer_render_admin_page',
         'dashicons-admin-customizer',
         30
     );
 }
-add_action('admin_menu', 'darkup_add_admin_menu');
+add_action('admin_menu', 'theme_changer_add_admin_menu');
 
 /**
  * Render admin page
  */
-function darkup_render_admin_page() {
-    require_once DARKUP_PLUGIN_DIR . 'frontend/admin-page.php';
+function theme_changer_render_admin_page() {
+    require_once THEME_CHANGER_PLUGIN_DIR . 'frontend/admin-page.php';
 }
 
 /**
  * Shortcode to display theme switcher anywhere on the site
- * Usage: [darkup_theme_switcher]
+ * Usage: [theme_changer_theme_switcher]
  */
-function darkup_theme_switcher_shortcode($atts) {
+function theme_changer_theme_switcher_shortcode($atts) {
     $atts = shortcode_atts(array(
         'style' => 'floating', // floating or inline
     ), $atts);
@@ -215,9 +215,9 @@ function darkup_theme_switcher_shortcode($atts) {
     if ($atts['style'] === 'inline') {
         // Inline style - embedded in content
         ?>
-        <div class="darkup-theme-switcher-inline" style="margin: 20px 0;">
-            <button class="darkup-theme-toggle-btn-inline" style="
-                background-color: var(--darkup-primary);
+        <div class="theme-changer-theme-switcher-inline" style="margin: 20px 0;">
+            <button class="theme-changer-theme-toggle-btn-inline" style="
+                background-color: var(--theme-changer-primary);
                 color: #ffffff;
                 border: none;
                 border-radius: 8px;
@@ -226,17 +226,17 @@ function darkup_theme_switcher_shortcode($atts) {
                 font-size: 16px;
                 font-weight: 600;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            " onclick="jQuery('.darkup-theme-panel').toggleClass('active');">
+            " onclick="jQuery('.theme-changer-theme-panel').toggleClass('active');">
                 🎨 Change Theme
             </button>
         </div>
         <?php
     } else {
         // Default floating style is already created by JavaScript
-        echo '<!-- Darkup theme switcher widget is automatically displayed -->';
+        echo '<!-- Theme Changer theme switcher widget is automatically displayed -->';
     }
     
     return ob_get_clean();
 }
-add_shortcode('darkup_theme_switcher', 'darkup_theme_switcher_shortcode');
+add_shortcode('theme_changer_theme_switcher', 'theme_changer_theme_switcher_shortcode');
 

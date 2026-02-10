@@ -9,7 +9,7 @@
     'use strict';
 
     // Theme Switcher Class
-    class DarkupThemeSwitcher {
+    class ThemeChangerThemeSwitcher {
         constructor() {
             this.currentMode = 'auto';
             this.currentTheme = null;
@@ -34,20 +34,20 @@
 
         loadPreferences() {
             // Prefer server-side data if available
-            if (typeof darkupAjax !== 'undefined' && darkupAjax.currentTheme) {
-                this.currentMode = darkupAjax.currentTheme.mode || 'auto';
+            if (typeof themeChangerAjax !== 'undefined' && themeChangerAjax.currentTheme) {
+                this.currentMode = themeChangerAjax.currentTheme.mode || 'auto';
                 this.currentTheme = {
-                    id: darkupAjax.currentTheme.id,
-                    type: darkupAjax.currentTheme.type
+                    id: themeChangerAjax.currentTheme.id,
+                    type: themeChangerAjax.currentTheme.type
                 };
 
                 // Sync to localStorage
-                localStorage.setItem('darkup_mode', this.currentMode);
-                localStorage.setItem('darkup_theme', JSON.stringify(this.currentTheme));
+                localStorage.setItem('theme_changer_mode', this.currentMode);
+                localStorage.setItem('theme_changer_theme', JSON.stringify(this.currentTheme));
             } else {
                 // Fallback to localStorage
-                const savedMode = localStorage.getItem('darkup_mode');
-                const savedTheme = localStorage.getItem('darkup_theme');
+                const savedMode = localStorage.getItem('theme_changer_mode');
+                const savedTheme = localStorage.getItem('theme_changer_theme');
 
                 if (savedMode) {
                     this.currentMode = savedMode;
@@ -86,18 +86,18 @@
 
         createWidget() {
             const widget = `
-                <div class="darkup-theme-switcher">
-                    <button class="darkup-theme-toggle-btn" aria-label="Toggle theme">
+                <div class="theme-changer-theme-switcher">
+                    <button class="theme-changer-theme-toggle-btn" aria-label="Toggle theme">
                         <span class="dashicons dashicons-admin-appearance"></span>
                     </button>
-                    <div class="darkup-theme-panel">
+                    <div class="theme-changer-theme-panel">
                         <h3>Theme Settings</h3>
-                        <div class="darkup-mode-selector">
-                            <button class="darkup-mode-btn" data-mode="auto">Auto</button>
-                            <button class="darkup-mode-btn" data-mode="light">Light</button>
-                            <button class="darkup-mode-btn" data-mode="dark">Dark</button>
+                        <div class="theme-changer-mode-selector">
+                            <button class="theme-changer-mode-btn" data-mode="auto">Auto</button>
+                            <button class="theme-changer-mode-btn" data-mode="light">Light</button>
+                            <button class="theme-changer-mode-btn" data-mode="dark">Dark</button>
                         </div>
-                        <div class="darkup-theme-list" id="darkup-theme-list">
+                        <div class="theme-changer-theme-list" id="theme-changer-theme-list">
                             <!-- Themes will be loaded here -->
                         </div>
                     </div>
@@ -109,67 +109,67 @@
         }
 
         loadThemes() {
-            const themeList = $('#darkup-theme-list');
+            const themeList = $('#theme-changer-theme-list');
 
-            if (typeof darkupAjax === 'undefined' || !darkupAjax.defaultThemes) {
-                themeList.html('<p style="color: var(--darkup-text-secondary); font-size: 14px;">No themes available</p>');
+            if (typeof themeChangerAjax === 'undefined' || !themeChangerAjax.defaultThemes) {
+                themeList.html('<p style="color: var(--theme-changer-text-secondary); font-size: 14px;">No themes available</p>');
                 return;
             }
 
             let html = '';
 
             // Add default themes
-            if (darkupAjax.defaultThemes) {
-                html += '<h4 style="color: var(--darkup-text); font-size: 14px; margin: 15px 0 10px 0;">Default Themes</h4>';
+            if (themeChangerAjax.defaultThemes) {
+                html += '<h4 style="color: var(--theme-changer-text); font-size: 14px; margin: 15px 0 10px 0;">Default Themes</h4>';
 
-                Object.values(darkupAjax.defaultThemes).forEach(theme => {
-                    const isActive = darkupAjax.currentTheme && darkupAjax.currentTheme.id === theme.id;
+                Object.values(themeChangerAjax.defaultThemes).forEach(theme => {
+                    const isActive = themeChangerAjax.currentTheme && themeChangerAjax.currentTheme.id === theme.id;
                     const activeClass = isActive ? 'active' : '';
 
                     // Get first 5 colors for preview
                     const colors = Object.values(theme.colors).slice(0, 5);
                     const colorDots = colors.map(color =>
-                        `<div class="darkup-color-dot" style="background-color: ${color};"></div>`
+                        `<div class="theme-changer-color-dot" style="background-color: ${color};"></div>`
                     ).join('');
 
                     html += `
-                        <div class="darkup-theme-option ${activeClass}" 
+                        <div class="theme-changer-theme-option ${activeClass}" 
                              data-theme-id="${theme.id}" 
                              data-theme-type="default">
-                            <div class="darkup-theme-option-name">${theme.name}</div>
-                            <div class="darkup-theme-option-colors">${colorDots}</div>
+                            <div class="theme-changer-theme-option-name">${theme.name}</div>
+                            <div class="theme-changer-theme-option-colors">${colorDots}</div>
                         </div>
                     `;
                 });
             }
 
             // Add custom themes
-            if (darkupAjax.customThemes && Object.keys(darkupAjax.customThemes).length > 0) {
-                html += '<h4 style="color: var(--darkup-text); font-size: 14px; margin: 15px 0 10px 0;">Custom Themes</h4>';
+            if (themeChangerAjax.customThemes && Object.keys(themeChangerAjax.customThemes).length > 0) {
+                html += '<h4 style="color: var(--theme-changer-text); font-size: 14px; margin: 15px 0 10px 0;">Custom Themes</h4>';
 
-                Object.values(darkupAjax.customThemes).forEach(theme => {
-                    const isActive = darkupAjax.currentTheme && darkupAjax.currentTheme.id === theme.id;
+                Object.values(themeChangerAjax.customThemes).forEach(theme => {
+                    const isActive = themeChangerAjax.currentTheme && themeChangerAjax.currentTheme.id === theme.id;
                     const activeClass = isActive ? 'active' : '';
 
                     // Get first 5 colors for preview
                     const colors = Object.values(theme.colors).slice(0, 5);
                     const colorDots = colors.map(color =>
-                        `<div class="darkup-color-dot" style="background-color: ${color};"></div>`
+                        `<div class="theme-changer-color-dot" style="background-color: ${color};"></div>`
                     ).join('');
 
                     html += `
-                        <div class="darkup-theme-option ${activeClass}" 
+                        <div class="theme-changer-theme-option ${activeClass}" 
                              data-theme-id="${theme.id}" 
                              data-theme-type="custom">
-                            <div class="darkup-theme-option-name">${theme.name}</div>
-                            <div class="darkup-theme-option-colors">${colorDots}</div>
+                            <div class="theme-changer-theme-option-name">${theme.name}</div>
+                            <div class="theme-changer-theme-option-colors">${colorDots}</div>
                         </div>
                     `;
                 });
             }
 
             if (!html) {
-                html = '<p style="color: var(--darkup-text-secondary); font-size: 14px;">No themes available</p>';
+                html = '<p style="color: var(--theme-changer-text-secondary); font-size: 14px;">No themes available</p>';
             }
 
             themeList.html(html);
@@ -179,26 +179,26 @@
             const self = this;
 
             // Toggle theme panel
-            $(document).on('click', '.darkup-theme-toggle-btn', function (e) {
+            $(document).on('click', '.theme-changer-theme-toggle-btn', function (e) {
                 e.stopPropagation();
-                $('.darkup-theme-panel').toggleClass('active');
+                $('.theme-changer-theme-panel').toggleClass('active');
             });
 
             // Close panel when clicking outside
             $(document).on('click', function (e) {
-                if (!$(e.target).closest('.darkup-theme-switcher').length) {
-                    $('.darkup-theme-panel').removeClass('active');
+                if (!$(e.target).closest('.theme-changer-theme-switcher').length) {
+                    $('.theme-changer-theme-panel').removeClass('active');
                 }
             });
 
             // Mode selection
-            $(document).on('click', '.darkup-mode-btn', function () {
+            $(document).on('click', '.theme-changer-mode-btn', function () {
                 const mode = $(this).data('mode');
                 self.changeMode(mode);
             });
 
             // Theme selection
-            $(document).on('click', '.darkup-theme-option', function () {
+            $(document).on('click', '.theme-changer-theme-option', function () {
                 const themeId = $(this).data('theme-id');
                 const themeType = $(this).data('theme-type');
                 self.selectTheme(themeId, themeType);
@@ -210,7 +210,7 @@
 
         changeMode(mode) {
             this.currentMode = mode;
-            localStorage.setItem('darkup_mode', mode);
+            localStorage.setItem('theme_changer_mode', mode);
 
             // Save to server
             this.saveThemePreference();
@@ -225,7 +225,7 @@
                 type: themeType
             };
 
-            localStorage.setItem('darkup_theme', JSON.stringify(this.currentTheme));
+            localStorage.setItem('theme_changer_theme', JSON.stringify(this.currentTheme));
 
             // Update UI
             this.updateActiveStates();
@@ -235,17 +235,17 @@
         }
 
         saveThemePreference(reloadOnSuccess = false) {
-            if (typeof darkupAjax === 'undefined') {
-                console.warn('darkupAjax not defined');
+            if (typeof themeChangerAjax === 'undefined') {
+                console.warn('themeChangerAjax not defined');
                 return;
             }
 
             $.ajax({
-                url: darkupAjax.ajaxurl,
+                url: themeChangerAjax.ajaxurl,
                 type: 'POST',
                 data: {
-                    action: 'darkup_save_theme',
-                    nonce: darkupAjax.nonce,
+                    action: 'theme_changer_save_theme',
+                    nonce: themeChangerAjax.nonce,
                     theme_type: this.currentTheme ? this.currentTheme.type : 'default',
                     theme_id: this.currentTheme ? this.currentTheme.id : 'default-dark',
                     mode: this.currentMode
@@ -269,20 +269,20 @@
 
         updateActiveStates() {
             // Update mode buttons
-            $('.darkup-mode-btn').removeClass('active');
-            $(`.darkup-mode-btn[data-mode="${this.currentMode}"]`).addClass('active');
+            $('.theme-changer-mode-btn').removeClass('active');
+            $(`.theme-changer-mode-btn[data-mode="${this.currentMode}"]`).addClass('active');
 
             // Update theme options
-            $('.darkup-theme-option').removeClass('active');
+            $('.theme-changer-theme-option').removeClass('active');
             if (this.currentTheme) {
-                $(`.darkup-theme-option[data-theme-id="${this.currentTheme.id}"]`).addClass('active');
+                $(`.theme-changer-theme-option[data-theme-id="${this.currentTheme.id}"]`).addClass('active');
             }
         }
     }
 
     // Initialize when DOM is ready
     $(document).ready(function () {
-        new DarkupThemeSwitcher();
+        new ThemeChangerThemeSwitcher();
     });
 
 })(jQuery);

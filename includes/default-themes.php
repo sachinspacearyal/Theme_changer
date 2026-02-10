@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
  * 
  * @return array Array of default theme configurations
  */
-function darkup_get_default_themes() {
+function theme_changer_get_default_themes() {
     return array(
         'default-dark' => array(
             'id' => 'default-dark',
@@ -160,8 +160,8 @@ function darkup_get_default_themes() {
  * @param string $theme_id Theme ID
  * @return array|null Theme configuration or null if not found
  */
-function darkup_get_default_theme($theme_id) {
-    $themes = darkup_get_default_themes();
+function theme_changer_get_default_theme($theme_id) {
+    $themes = theme_changer_get_default_themes();
     return isset($themes[$theme_id]) ? $themes[$theme_id] : null;
 }
 
@@ -171,8 +171,8 @@ function darkup_get_default_theme($theme_id) {
  * 
  * @return string The detected or default mode
  */
-function darkup_detect_mode() {
-    $active_theme = get_option('darkup_active_theme');
+function theme_changer_detect_mode() {
+    $active_theme = get_option('theme_changer_active_theme');
     
     if ($active_theme && isset($active_theme['mode'])) {
         return $active_theme['mode'];
@@ -188,8 +188,8 @@ function darkup_detect_mode() {
  * @param string $mode The mode (dark/light/auto)
  * @return array Theme configuration
  */
-function darkup_get_theme_by_mode($mode) {
-    $themes = darkup_get_default_themes();
+function theme_changer_get_theme_by_mode($mode) {
+    $themes = theme_changer_get_default_themes();
     
     switch ($mode) {
         case 'dark':

@@ -15,8 +15,8 @@ if (!defined('ABSPATH')) {
  * Apply the currently active theme
  * Generates and injects CSS custom properties
  */
-function darkup_apply_theme() {
-    $active_theme_option = get_option('darkup_active_theme');
+function theme_changer_apply_theme() {
+    $active_theme_option = get_option('theme_changer_active_theme');
     
     if (!$active_theme_option) {
         // No active theme, use default
@@ -27,17 +27,17 @@ function darkup_apply_theme() {
         );
     }
     
-    $theme = darkup_get_active_theme_data($active_theme_option);
+    $theme = theme_changer_get_active_theme_data($active_theme_option);
     
     if (!$theme) {
         return; // No valid theme found
     }
     
     // Generate CSS
-    $css = darkup_generate_theme_css($theme, $active_theme_option['mode']);
+    $css = theme_changer_generate_theme_css($theme, $active_theme_option['mode']);
     
     // Output inline styles
-    echo '<style id="darkup-theme-styles">' . "\n";
+    echo '<style id="theme-changer-theme-styles">' . "\n";
     echo $css;
     echo "\n" . '</style>' . "\n";
 }
@@ -48,14 +48,14 @@ function darkup_apply_theme() {
  * @param array $active_theme_option Active theme option from database
  * @return array|null Theme data or null if not found
  */
-function darkup_get_active_theme_data($active_theme_option) {
+function theme_changer_get_active_theme_data($active_theme_option) {
     $type = $active_theme_option['type'];
     $id = $active_theme_option['id'];
     
     if ($type === 'custom') {
-        return darkup_get_custom_theme($id);
+        return theme_changer_get_custom_theme($id);
     } else {
-        return darkup_get_default_theme($id);
+        return theme_changer_get_default_theme($id);
     }
 }
 
@@ -66,7 +66,7 @@ function darkup_get_active_theme_data($active_theme_option) {
  * @param string $mode Current mode (dark/light/auto)
  * @return string Generated CSS
  */
-function darkup_generate_theme_css($theme, $mode) {
+function theme_changer_generate_theme_css($theme, $mode) {
     $colors = $theme['colors'];
     
     $css = '';
@@ -74,29 +74,29 @@ function darkup_generate_theme_css($theme, $mode) {
     if ($mode === 'auto') {
         // Generate CSS for auto mode with media queries
         $css .= ":root {\n";
-        $css .= darkup_generate_css_variables($colors);
+        $css .= theme_changer_generate_css_variables($colors);
         $css .= "}\n\n";
         
         // Add light mode overrides if available
-        $light_theme = darkup_get_default_theme('default-light');
+        $light_theme = theme_changer_get_default_theme('default-light');
         if ($light_theme) {
             $css .= "@media (prefers-color-scheme: light) {\n";
             $css .= "  :root {\n";
-            $css .= darkup_generate_css_variables($light_theme['colors'], '    ');
+            $css .= theme_changer_generate_css_variables($light_theme['colors'], '    ');
             $css .= "  }\n";
             $css .= "}\n";
         }
     } else {
         // Generate CSS for specific mode
         $css .= ":root {\n";
-        $css .= darkup_generate_css_variables($colors);
+        $css .= theme_changer_generate_css_variables($colors);
         $css .= "}\n";
     }
     
     // Apply colors to body for immediate effect
     $css .= "\nbody {\n";
-    $css .= "  background-color: var(--darkup-background) !important;\n";
-    $css .= "  color: var(--darkup-text) !important;\n";
+    $css .= "  background-color: var(--theme-changer-background) !important;\n";
+    $css .= "  color: var(--theme-changer-text) !important;\n";
     $css .= "}\n";
     
     return $css;
@@ -109,11 +109,11 @@ function darkup_generate_theme_css($theme, $mode) {
  * @param string $indent Indentation string
  * @return string CSS custom properties
  */
-function darkup_generate_css_variables($colors, $indent = '  ') {
+function theme_changer_generate_css_variables($colors, $indent = '  ') {
     $css = '';
     
     foreach ($colors as $key => $value) {
-        $css .= $indent . '--darkup-' . $key . ': ' . $value . ";\n";
+        $css .= $indent . '--theme-changer-' . $key . ': ' . $value . ";\n";
     }
     
     return $css;
@@ -125,9 +125,9 @@ function darkup_generate_css_variables($colors, $indent = '  ') {
  * 
  * @return array Current theme info
  */
-function darkup_get_current_theme_info() {
-    $active_theme_option = get_option('darkup_active_theme');
-    $theme_data = darkup_get_active_theme_data($active_theme_option);
+function theme_changer_get_current_theme_info() {
+    $active_theme_option = get_option('theme_changer_active_theme');
+    $theme_data = theme_changer_get_active_theme_data($active_theme_option);
     
     return array(
         'type' => $active_theme_option['type'],

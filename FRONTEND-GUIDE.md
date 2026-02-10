@@ -1,8 +1,8 @@
-# Darkup Plugin - Frontend Theme Switching Guide
+# theme-changer Plugin - Frontend Theme Switching Guide
 
 ## 🎨 How Users Can Change Themes on the Frontend
 
-The Darkup plugin now allows **all users** (not just admins) to change themes from the frontend of your website.
+The theme-changer plugin now allows **all users** (not just admins) to change themes from the frontend of your website.
 
 ## Theme Switcher Widget
 
@@ -28,13 +28,13 @@ You can also place a theme switcher button anywhere in your content using a shor
 Add this shortcode to any page, post, or widget:
 
 ```
-[darkup_theme_switcher]
+[theme_changer_theme_switcher]
 ```
 
 Or for an inline button style:
 
 ```
-[darkup_theme_switcher style="inline"]
+[theme_changer_theme_switcher style="inline"]
 ```
 
 ### Example:
@@ -44,7 +44,7 @@ Place this in a WordPress page:
 ```
 Welcome to our site!
 
-[darkup_theme_switcher style="inline"]
+[theme_changer_theme_switcher style="inline"]
 
 You can customize the appearance using the button above.
 ```
@@ -68,7 +68,7 @@ You can customize the appearance using the button above.
 
 The following changes were made:
 
-1. **darkup.php** - Theme data now passed to JavaScript via `wp_localize_script`
+1. **dark.php** - Theme data now passed to JavaScript via `wp_localize_script`
 2. **theme-switcher.js** - Properly loads and renders all available themes
 3. **style.css** - Enhanced styling for theme list headings
 4. Added **shortcode support** for flexible placement

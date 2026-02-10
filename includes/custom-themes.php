@@ -15,8 +15,8 @@ if (!defined('ABSPATH')) {
  * 
  * @return array Array of custom themes
  */
-function darkup_get_custom_themes() {
-    $custom_themes = get_option('darkup_custom_themes', array());
+function theme_changer_get_custom_themes() {
+    $custom_themes = get_option('theme_changer_custom_themes', array());
     return is_array($custom_themes) ? $custom_themes : array();
 }
 
@@ -26,8 +26,8 @@ function darkup_get_custom_themes() {
  * @param string $theme_id Theme ID
  * @return array|null Theme configuration or null if not found
  */
-function darkup_get_custom_theme($theme_id) {
-    $custom_themes = darkup_get_custom_themes();
+function theme_changer_get_custom_theme($theme_id) {
+    $custom_themes = theme_changer_get_custom_themes();
     return isset($custom_themes[$theme_id]) ? $custom_themes[$theme_id] : null;
 }
 
@@ -39,7 +39,7 @@ function darkup_get_custom_theme($theme_id) {
  * @param string $mode Theme mode (dark/light/auto)
  * @return bool True on success, false on failure
  */
-function darkup_add_custom_theme($name, $colors, $mode = 'dark') {
+function theme_changer_add_custom_theme($name, $colors, $mode = 'dark') {
     // Validate inputs
     if (empty($name) || empty($colors)) {
         return false;
@@ -49,7 +49,7 @@ function darkup_add_custom_theme($name, $colors, $mode = 'dark') {
     $theme_id = 'custom-' . sanitize_title($name) . '-' . time();
     
     // Get existing custom themes
-    $custom_themes = darkup_get_custom_themes();
+    $custom_themes = theme_changer_get_custom_themes();
     
     // Create new theme
     $new_theme = array(
@@ -57,7 +57,7 @@ function darkup_add_custom_theme($name, $colors, $mode = 'dark') {
         'name' => sanitize_text_field($name),
         'type' => 'custom',
         'mode' => sanitize_text_field($mode),
-        'colors' => darkup_validate_theme_colors($colors),
+        'colors' => theme_changer_validate_theme_colors($colors),
         'created_at' => current_time('mysql')
     );
     
@@ -65,7 +65,7 @@ function darkup_add_custom_theme($name, $colors, $mode = 'dark') {
     $custom_themes[$theme_id] = $new_theme;
     
     // Save to database
-    return update_option('darkup_custom_themes', $custom_themes);
+    return update_option('theme_changer_custom_themes', $custom_themes);
 }
 
 /**
@@ -77,8 +77,8 @@ function darkup_add_custom_theme($name, $colors, $mode = 'dark') {
  * @param string $mode Theme mode
  * @return bool True on success, false on failure
  */
-function darkup_update_custom_theme($theme_id, $name, $colors, $mode) {
-    $custom_themes = darkup_get_custom_themes();
+function theme_changer_update_custom_theme($theme_id, $name, $colors, $mode) {
+    $custom_themes = theme_changer_get_custom_themes();
     
     if (!isset($custom_themes[$theme_id])) {
         return false;
@@ -86,11 +86,11 @@ function darkup_update_custom_theme($theme_id, $name, $colors, $mode) {
     
     // Update theme
     $custom_themes[$theme_id]['name'] = sanitize_text_field($name);
-    $custom_themes[$theme_id]['colors'] = darkup_validate_theme_colors($colors);
+    $custom_themes[$theme_id]['colors'] = theme_changer_validate_theme_colors($colors);
     $custom_themes[$theme_id]['mode'] = sanitize_text_field($mode);
     $custom_themes[$theme_id]['updated_at'] = current_time('mysql');
     
-    return update_option('darkup_custom_themes', $custom_themes);
+    return update_option('theme_changer_custom_themes', $custom_themes);
 }
 
 /**
@@ -99,8 +99,8 @@ function darkup_update_custom_theme($theme_id, $name, $colors, $mode) {
  * @param string $theme_id Theme ID
  * @return bool True on success, false on failure
  */
-function darkup_remove_custom_theme($theme_id) {
-    $custom_themes = darkup_get_custom_themes();
+function theme_changer_remove_custom_theme($theme_id) {
+    $custom_themes = theme_changer_get_custom_themes();
     
     if (!isset($custom_themes[$theme_id])) {
         return false;
@@ -110,17 +110,17 @@ function darkup_remove_custom_theme($theme_id) {
     unset($custom_themes[$theme_id]);
     
     // Check if this was the active theme
-    $active_theme = get_option('darkup_active_theme');
+    $active_theme = get_option('theme_changer_active_theme');
     if ($active_theme && $active_theme['type'] === 'custom' && $active_theme['id'] === $theme_id) {
         // Reset to default theme
-        update_option('darkup_active_theme', array(
+        update_option('theme_changer_active_theme', array(
             'type' => 'default',
             'id' => 'default-dark',
             'mode' => 'auto'
         ));
     }
     
-    return update_option('darkup_custom_themes', $custom_themes);
+    return update_option('theme_changer_custom_themes', $custom_themes);
 }
 
 /**
@@ -129,7 +129,7 @@ function darkup_remove_custom_theme($theme_id) {
  * @param array $colors Array of colors to validate
  * @return array Validated and sanitized colors
  */
-function darkup_validate_theme_colors($colors) {
+function theme_changer_validate_theme_colors($colors) {
     $default_colors = array(
         'background' => '#1a1a1a',
         'surface' => '#2d2d2d',
@@ -166,12 +166,12 @@ function darkup_validate_theme_colors($colors) {
  * @param string $type Theme type (default/custom)
  * @return bool True if exists, false otherwise
  */
-function darkup_theme_exists($theme_id, $type = 'default') {
+function theme_changer_theme_exists($theme_id, $type = 'default') {
     if ($type === 'default') {
-        $theme = darkup_get_default_theme($theme_id);
+        $theme = theme_changer_get_default_theme($theme_id);
         return $theme !== null;
     } else {
-        $theme = darkup_get_custom_theme($theme_id);
+        $theme = theme_changer_get_custom_theme($theme_id);
         return $theme !== null;
     }
 }

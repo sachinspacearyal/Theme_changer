@@ -1,5 +1,5 @@
 /**
- * Darkup Base Styles
+ * theme-changer Base Styles
  * 
  * This file contains base CSS that utilizes theme variables
  * defined by the plugin's theme system.
@@ -7,17 +7,17 @@
 
 /* CSS Custom Properties - Default values (will be overridden by theme) */
 :root {
-    --darkup-background: #1a1a1a;
-    --darkup-surface: #2d2d2d;
-    --darkup-text: #ffffff;
-    --darkup-text-secondary: #b0b0b0;
-    --darkup-primary: #4a9eff;
-    --darkup-secondary: #ff6b6b;
-    --darkup-accent: #ffd93d;
-    --darkup-border: #404040;
-    --darkup-success: #6bcf7f;
-    --darkup-warning: #ffb84d;
-    --darkup-error: #ff5252;
+    --theme-changer-background: #1a1a1a;
+    --theme-changer-surface: #2d2d2d;
+    --theme-changer-text: #ffffff;
+    --theme-changer-text-secondary: #b0b0b0;
+    --theme-changer-primary: #4a9eff;
+    --theme-changer-secondary: #ff6b6b;
+    --theme-changer-accent: #ffd93d;
+    --theme-changer-border: #404040;
+    --theme-changer-success: #6bcf7f;
+    --theme-changer-warning: #ffb84d;
+    --theme-changer-error: #ff5252;
 }
 
 /* Smooth transitions for theme changes */
@@ -27,37 +27,37 @@
 
 /* Base body styling */
 body {
-    background-color: var(--darkup-background);
-    color: var(--darkup-text);
+    background-color: var(--theme-changer-background);
+    color: var(--theme-changer-text);
 }
 
 /* Utility classes for theme colors */
-.darkup-bg-surface {
-    background-color: var(--darkup-surface);
+.theme-changer-bg-surface {
+    background-color: var(--theme-changer-surface);
 }
 
-.darkup-text-primary {
-    color: var(--darkup-primary);
+.theme-changer-text-primary {
+    color: var(--theme-changer-primary);
 }
 
-.darkup-text-secondary {
-    color: var(--darkup-text-secondary);
+.theme-changer-text-secondary {
+    color: var(--theme-changer-text-secondary);
 }
 
-.darkup-border {
-    border-color: var(--darkup-border);
+.theme-changer-border {
+    border-color: var(--theme-changer-border);
 }
 
 /* Theme Switcher Widget Styles */
-.darkup-theme-switcher {
+.theme-changer-theme-switcher {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 9999;
 }
 
-.darkup-theme-toggle-btn {
-    background-color: var(--darkup-primary);
+.theme-changer-theme-toggle-btn {
+    background-color: var(--theme-changer-primary);
     color: #ffffff;
     border: none;
     border-radius: 50%;
@@ -72,17 +72,17 @@ body {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.darkup-theme-toggle-btn:hover {
+.theme-changer-theme-toggle-btn:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
-.darkup-theme-panel {
+.theme-changer-theme-panel {
     position: absolute;
     bottom: 70px;
     right: 0;
-    background-color: var(--darkup-surface);
-    border: 1px solid var(--darkup-border);
+    background-color: var(--theme-changer-surface);
+    border: 1px solid var(--theme-changer-border);
     border-radius: 12px;
     padding: 20px;
     min-width: 280px;
@@ -93,7 +93,7 @@ body {
     overflow-y: auto;
 }
 
-.darkup-theme-panel.active {
+.theme-changer-theme-panel.active {
     display: block;
     animation: slideUp 0.3s ease;
 }
@@ -110,100 +110,100 @@ body {
     }
 }
 
-.darkup-theme-panel h3 {
+.theme-changer-theme-panel h3 {
     margin: 0 0 15px 0;
-    color: var(--darkup-text);
+    color: var(--theme-changer-text);
     font-size: 18px;
     font-weight: 600;
 }
 
-.darkup-theme-panel h4 {
+.theme-changer-theme-panel h4 {
     margin: 15px 0 10px 0;
-    color: var(--darkup-text);
+    color: var(--theme-changer-text);
     font-size: 14px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.darkup-mode-selector {
+.theme-changer-mode-selector {
     display: flex;
     gap: 8px;
     margin-bottom: 20px;
 }
 
-.darkup-mode-btn {
+.theme-changer-mode-btn {
     flex: 1;
     padding: 8px 12px;
-    background-color: var(--darkup-background);
-    color: var(--darkup-text);
-    border: 1px solid var(--darkup-border);
+    background-color: var(--theme-changer-background);
+    color: var(--theme-changer-text);
+    border: 1px solid var(--theme-changer-border);
     border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
     transition: all 0.2s ease;
 }
 
-.darkup-mode-btn:hover {
-    background-color: var(--darkup-surface);
-    border-color: var(--darkup-primary);
+.theme-changer-mode-btn:hover {
+    background-color: var(--theme-changer-surface);
+    border-color: var(--theme-changer-primary);
 }
 
-.darkup-mode-btn.active {
-    background-color: var(--darkup-primary);
+.theme-changer-mode-btn.active {
+    background-color: var(--theme-changer-primary);
     color: #ffffff;
-    border-color: var(--darkup-primary);
+    border-color: var(--theme-changer-primary);
 }
 
-.darkup-theme-list {
+.theme-changer-theme-list {
     display: grid;
     gap: 10px;
 }
 
-.darkup-theme-option {
+.theme-changer-theme-option {
     padding: 12px;
-    background-color: var(--darkup-background);
-    border: 2px solid var(--darkup-border);
+    background-color: var(--theme-changer-background);
+    border: 2px solid var(--theme-changer-border);
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
-.darkup-theme-option:hover {
-    border-color: var(--darkup-primary);
+.theme-changer-theme-option:hover {
+    border-color: var(--theme-changer-primary);
     transform: translateX(4px);
 }
 
-.darkup-theme-option.active {
-    border-color: var(--darkup-primary);
-    background-color: var(--darkup-surface);
+.theme-changer-theme-option.active {
+    border-color: var(--theme-changer-primary);
+    background-color: var(--theme-changer-surface);
 }
 
-.darkup-theme-option-name {
+.theme-changer-theme-option-name {
     font-weight: 600;
-    color: var(--darkup-text);
+    color: var(--theme-changer-text);
     margin-bottom: 8px;
 }
 
-.darkup-theme-option-colors {
+.theme-changer-theme-option-colors {
     display: flex;
     gap: 4px;
 }
 
-.darkup-color-dot {
+.theme-changer-color-dot {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 1px solid var(--darkup-border);
+    border: 1px solid var(--theme-changer-border);
 }
 
 /* Admin Page Styles */
-.darkup-admin-page {
+.theme-changer-admin-page {
     max-width: 1200px;
     margin: 20px 0;
 }
 
-.darkup-admin-section {
+.theme-changer-admin-section {
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -211,19 +211,19 @@ body {
     margin-bottom: 20px;
 }
 
-.darkup-admin-section h2 {
+.theme-changer-admin-section h2 {
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 22px;
 }
 
-.darkup-theme-grid {
+.theme-changer-theme-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
 }
 
-.darkup-theme-card {
+.theme-changer-theme-card {
     border: 2px solid #ddd;
     border-radius: 8px;
     padding: 15px;
@@ -232,33 +232,33 @@ body {
     transition: all 0.2s ease;
 }
 
-.darkup-theme-card:hover {
+.theme-changer-theme-card:hover {
     border-color: #0073aa;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.darkup-theme-card.active {
+.theme-changer-theme-card.active {
     border-color: #0073aa;
     background-color: #f0f8ff;
 }
 
-.darkup-color-picker-group {
+.theme-changer-color-picker-group {
     margin-bottom: 15px;
 }
 
-.darkup-color-picker-group label {
+.theme-changer-color-picker-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
     color: #333;
 }
 
-.darkup-color-input {
+.theme-changer-color-input {
     width: 100%;
     padding: 8px;
 }
 
-.darkup-btn {
+.theme-changer-btn {
     padding: 10px 20px;
     background-color: #0073aa;
     color: #ffffff;
@@ -270,31 +270,31 @@ body {
     transition: background-color 0.2s ease;
 }
 
-.darkup-btn:hover {
+.theme-changer-btn:hover {
     background-color: #005a87;
 }
 
-.darkup-btn-delete {
+.theme-changer-btn-delete {
     background-color: #dc3232;
 }
 
-.darkup-btn-delete:hover {
+.theme-changer-btn-delete:hover {
     background-color: #a00;
 }
 
-.darkup-notice {
+.theme-changer-notice {
     padding: 12px 15px;
     border-left: 4px solid #0073aa;
     background-color: #f0f8ff;
     margin-bottom: 20px;
 }
 
-.darkup-notice.success {
+.theme-changer-notice.success {
     border-left-color: #46b450;
     background-color: #ecf7ed;
 }
 
-.darkup-notice.error {
+.theme-changer-notice.error {
     border-left-color: #dc3232;
     background-color: #fef7f7;
 }
