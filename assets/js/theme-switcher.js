@@ -227,17 +227,14 @@
 
             localStorage.setItem('darkup_theme', JSON.stringify(this.currentTheme));
 
-            // Save to server
-            this.saveThemePreference();
-
             // Update UI
             this.updateActiveStates();
 
-            // Reload page to apply theme (in production, this would be done via AJAX)
-            location.reload();
+            // Save to server and reload after successful save
+            this.saveThemePreference(true);
         }
 
-        saveThemePreference() {
+        saveThemePreference(reloadOnSuccess = false) {
             if (typeof darkupAjax === 'undefined') {
                 console.warn('darkupAjax not defined');
                 return;
@@ -255,9 +252,17 @@
                 },
                 success: function (response) {
                     console.log('Theme preference saved:', response);
+                    // Reload page only after successful save
+                    if (reloadOnSuccess) {
+                        location.reload();
+                    }
                 },
                 error: function (error) {
                     console.error('Failed to save theme preference:', error);
+                    // Still reload on error to attempt to apply theme
+                    if (reloadOnSuccess) {
+                        location.reload();
+                    }
                 }
             });
         }
