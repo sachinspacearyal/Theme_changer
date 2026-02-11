@@ -1,14 +1,12 @@
 <?php
 /**
- * Plugin Name: Theme Changer
- * Plugin URI: https://example.com/theme-changer
+ * Plugin Name: theme-changer
  * Description: A WordPress plugin that provides default and custom dark/light theme functionality with automatic mode detection and user-customizable color schemes.
  * Version: 1.0.0
- * Author: Your Name
- * Author URI: https://example.com
+ * Author: Sachin Aryal 
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: theme-changer
+ 
  */
 
 // Prevent direct access
@@ -79,7 +77,7 @@ function theme_changer_enqueue_assets() {
     );
     
     // Enqueue color picker script (only on admin page)
-    if (is_admin() && isset($_GET['page']) && $_GET['page'] === 'theme-changer-settings') {
+    if (is_admin() && filter_input(INPUT_GET, 'page') === 'theme-changer-settings') {
         wp_enqueue_style('wp-color-picker');
         wp_enqueue_script(
             'theme-changer-color-picker',
@@ -117,9 +115,13 @@ add_action('admin_head', 'theme_changer_apply_active_theme');
 function theme_changer_save_theme_preference() {
     check_ajax_referer('theme_changer_nonce', 'nonce');
     
-    $theme_type = sanitize_text_field($_POST['theme_type']);
-    $theme_id = sanitize_text_field($_POST['theme_id']);
-    $mode = sanitize_text_field($_POST['mode']);
+    if (!isset($_POST['theme_type'], $_POST['theme_id'], $_POST['mode'])) {
+        wp_send_json_error(array('message' => 'Missing required data'));
+    }
+
+    $theme_type = sanitize_text_field(wp_unslash($_POST['theme_type']));
+    $theme_id = sanitize_text_field(wp_unslash($_POST['theme_id']));
+    $mode = sanitize_text_field(wp_unslash($_POST['mode']));
     
     $active_theme = array(
         'type' => $theme_type,
@@ -140,13 +142,21 @@ add_action('wp_ajax_nopriv_theme_changer_save_theme', 'theme_changer_save_theme_
 function theme_changer_save_custom_theme() {
     check_ajax_referer('theme_changer_nonce', 'nonce');
     
-    $theme_name = sanitize_text_field($_POST['theme_name']);
-    $theme_colors = $_POST['theme_colors']; // Array of colors
-    $theme_mode = sanitize_text_field($_POST['theme_mode']);
+    if (!isset($_POST['theme_name'], $_POST['theme_colors'], $_POST['theme_mode'])) {
+        wp_send_json_error(array('message' => 'Missing required data'));
+    }
+
+    $theme_name = sanitize_text_field(wp_unslash($_POST['theme_name']));
+    $raw_theme_colors = map_deep(wp_unslash($_POST['theme_colors']), 'sanitize_hex_color'); 
+    $theme_mode = sanitize_text_field(wp_unslash($_POST['theme_mode']));
+
+    if (!is_array($raw_theme_colors)) {
+        wp_send_json_error(array('message' => 'Invalid color data'));
+    }
     
     // Sanitize colors
     $sanitized_colors = array();
-    foreach ($theme_colors as $key => $color) {
+    foreach ($raw_theme_colors as $key => $color) {
         $sanitized_colors[sanitize_key($key)] = sanitize_hex_color($color);
     }
     
@@ -166,7 +176,11 @@ add_action('wp_ajax_theme_changer_save_custom_theme', 'theme_changer_save_custom
 function theme_changer_delete_custom_theme() {
     check_ajax_referer('theme_changer_nonce', 'nonce');
     
-    $theme_id = sanitize_text_field($_POST['theme_id']);
+    if (!isset($_POST['theme_id'])) {
+        wp_send_json_error(array('message' => 'Missing theme ID'));
+    }
+
+    $theme_id = sanitize_text_field(wp_unslash($_POST['theme_id']));
     
     $result = theme_changer_remove_custom_theme($theme_id);
     

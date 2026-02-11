@@ -11,9 +11,10 @@ if (!defined('ABSPATH')) {
 }
 
 // Get all themes
-$default_themes = theme_changer_get_default_themes();
-$custom_themes = theme_changer_get_custom_themes();
-$active_theme = get_option('theme_changer_active_theme');
+// Get all themes
+$theme_changer_default_themes = theme_changer_get_default_themes();
+$theme_changer_custom_themes = theme_changer_get_custom_themes();
+$theme_changer_active_theme = get_option('theme_changer_active_theme');
 
 ?>
 
@@ -24,11 +25,11 @@ $active_theme = get_option('theme_changer_active_theme');
     <!-- Current Active Theme -->
     <div class="theme-changer-admin-section">
         <h2>Current Active Theme</h2>
-        <?php if ($active_theme): ?>
+        <?php if ($theme_changer_active_theme): ?>
             <p>
-                <strong>Mode:</strong> <?php echo esc_html(ucfirst($active_theme['mode'])); ?><br>
-                <strong>Type:</strong> <?php echo esc_html(ucfirst($active_theme['type'])); ?><br>
-                <strong>Theme ID:</strong> <?php echo esc_html($active_theme['id']); ?>
+                <strong>Mode:</strong> <?php echo esc_html(ucfirst($theme_changer_active_theme['mode'])); ?><br>
+                <strong>Type:</strong> <?php echo esc_html(ucfirst($theme_changer_active_theme['type'])); ?><br>
+                <strong>Theme ID:</strong> <?php echo esc_html($theme_changer_active_theme['id']); ?>
             </p>
         <?php else: ?>
             <p>No active theme selected.</p>
@@ -41,20 +42,20 @@ $active_theme = get_option('theme_changer_active_theme');
         <p>Choose from our predefined theme collection:</p>
         
         <div class="theme-changer-theme-grid">
-            <?php foreach ($default_themes as $theme): ?>
-                <div class="theme-changer-theme-card <?php echo ($active_theme && $active_theme['id'] === $theme['id']) ? 'active' : ''; ?>" 
-                     data-theme-id="<?php echo esc_attr($theme['id']); ?>" 
+            <?php foreach ($theme_changer_default_themes as $theme_changer_theme): ?>
+                <div class="theme-changer-theme-card <?php echo ($theme_changer_active_theme && $theme_changer_active_theme['id'] === $theme_changer_theme['id']) ? 'active' : ''; ?>" 
+                     data-theme-id="<?php echo esc_attr($theme_changer_theme['id']); ?>" 
                      data-theme-type="default"
-                     onclick="selectTheme('<?php echo esc_js($theme['id']); ?>', 'default')">
+                     onclick="selectTheme('<?php echo esc_js($theme_changer_theme['id']); ?>', 'default')">
                     
-                    <div class="theme-changer-theme-option-name"><?php echo esc_html($theme['name']); ?></div>
+                    <div class="theme-changer-theme-option-name"><?php echo esc_html($theme_changer_theme['name']); ?></div>
                     <div style="font-size: 12px; color: #666; margin-bottom: 10px;">
-                        Mode: <?php echo esc_html(ucfirst($theme['mode'])); ?>
+                        Mode: <?php echo esc_html(ucfirst($theme_changer_theme['mode'])); ?>
                     </div>
                     
                     <div class="theme-changer-theme-option-colors">
-                        <?php foreach (array_slice($theme['colors'], 0, 5) as $color): ?>
-                            <div class="theme-changer-color-dot" style="background-color: <?php echo esc_attr($color); ?>;"></div>
+                        <?php foreach (array_slice($theme_changer_theme['colors'], 0, 5) as $theme_changer_color): ?>
+                            <div class="theme-changer-color-dot" style="background-color: <?php echo esc_attr($theme_changer_color); ?>;"></div>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -66,32 +67,32 @@ $active_theme = get_option('theme_changer_active_theme');
     <div class="theme-changer-admin-section">
         <h2>Custom Themes</h2>
         
-        <?php if (!empty($custom_themes)): ?>
+        <?php if (!empty($theme_changer_custom_themes)): ?>
             <p>Your custom themes:</p>
             <div class="theme-changer-theme-grid">
-                <?php foreach ($custom_themes as $theme): ?>
-                    <div class="theme-changer-theme-card <?php echo ($active_theme && $active_theme['id'] === $theme['id']) ? 'active' : ''; ?>" 
-                         data-theme-id="<?php echo esc_attr($theme['id']); ?>" 
+                <?php foreach ($theme_changer_custom_themes as $theme_changer_theme): ?>
+                    <div class="theme-changer-theme-card <?php echo ($theme_changer_active_theme && $theme_changer_active_theme['id'] === $theme_changer_theme['id']) ? 'active' : ''; ?>" 
+                         data-theme-id="<?php echo esc_attr($theme_changer_theme['id']); ?>" 
                          data-theme-type="custom">
                         
-                        <div class="theme-changer-theme-option-name"><?php echo esc_html($theme['name']); ?></div>
+                        <div class="theme-changer-theme-option-name"><?php echo esc_html($theme_changer_theme['name']); ?></div>
                         <div style="font-size: 12px; color: #666; margin-bottom: 10px;">
-                            Mode: <?php echo esc_html(ucfirst($theme['mode'])); ?>
+                            Mode: <?php echo esc_html(ucfirst($theme_changer_theme['mode'])); ?>
                         </div>
                         
                         <div class="theme-changer-theme-option-colors" style="margin-bottom: 10px;">
-                            <?php foreach (array_slice($theme['colors'], 0, 5) as $color): ?>
-                                <div class="theme-changer-color-dot" style="background-color: <?php echo esc_attr($color); ?>;"></div>
+                            <?php foreach (array_slice($theme_changer_theme['colors'], 0, 5) as $theme_changer_color): ?>
+                                <div class="theme-changer-color-dot" style="background-color: <?php echo esc_attr($theme_changer_color); ?>;"></div>
                             <?php endforeach; ?>
                         </div>
                         
                         <div style="display: flex; gap: 10px;">
                             <button type="button" class="button button-small" 
-                                    onclick="selectTheme('<?php echo esc_js($theme['id']); ?>', 'custom')">
+                                    onclick="selectTheme('<?php echo esc_js($theme_changer_theme['id']); ?>', 'custom')">
                                 Select
                             </button>
                             <button type="button" class="button button-small theme-changer-delete-theme" 
-                                    data-theme-id="<?php echo esc_attr($theme['id']); ?>"
+                                    data-theme-id="<?php echo esc_attr($theme_changer_theme['id']); ?>"
                                     style="background-color: #dc3232; color: white;">
                                 Delete
                             </button>
@@ -208,7 +209,7 @@ function selectTheme(themeId, themeType) {
     }
     
     // Get current mode
-    const mode = '<?php echo esc_js($active_theme['mode'] ?? 'auto'); ?>';
+    const mode = '<?php echo esc_js($theme_changer_active_theme['mode'] ?? 'auto'); ?>';
     
     jQuery.ajax({
         url: themeChangerAjax.ajaxurl,

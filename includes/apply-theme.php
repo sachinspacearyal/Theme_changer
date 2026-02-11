@@ -38,7 +38,7 @@ function theme_changer_apply_theme() {
     
     // Output inline styles
     echo '<style id="theme-changer-theme-styles">' . "\n";
-    echo $css;
+    echo esc_html(wp_strip_all_tags($css));
     echo "\n" . '</style>' . "\n";
 }
 

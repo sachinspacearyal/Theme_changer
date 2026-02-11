@@ -1,6 +1,16 @@
-# Theme Changer - WordPress Theme Switcher Plugin
+=== theme-changer ===
+Contributors: sachinspacearyal
+Tags: dark mode, light mode, theme switcher, color schemes
+Requires at least: 5.0
+Tested up to: 6.9
+Stable tag: 1.0.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A powerful WordPress plugin that provides seamless dark/light theme functionality with automatic mode detection and user-customizable color schemes.
+# Theme Changer
+
+A seamless dark/light theme switcher for WordPress with custom color schemes and auto-mode detection.
+
 
 ## 📋 Description
 
@@ -22,7 +32,7 @@ A powerful WordPress plugin that provides seamless dark/light theme functionalit
 
 1. **Download or Clone**
    ```bash
-   git clone https://github.com/sachinspacearyal/Theme_changer.git
+25:    git clone https://github.com/sachinspacearyal/theme-changer.git
    ```
 
 2. **Upload to WordPress**
@@ -162,9 +172,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 ## 👤 Author
 
-**Your Name**
-- Website: [https://example.com](https://example.com)
-- Plugin URI: [https://example.com/theme-changer](https://example.com/theme-changer)
+**Sachin Aryal**
+
 
 ## 📞 Support
 
@@ -181,5 +190,91 @@ For support, please create an issue in the GitHub repository or contact through 
 **Version:** 1.0.0  
 **Text Domain:** theme-changer  
 **Requires at least:** WordPress 5.0  
-**Tested up to:** WordPress 6.4  
+**Tested up to:** WordPress 6.9  
 **Stable tag:** 1.0.0
+
+
+# theme-changer Plugin - Frontend Theme Switching Guide
+
+## 🎨 How Users Can Change Themes on the Frontend
+
+The theme-changer plugin now allows **all users** (not just admins) to change themes from the frontend of your website.
+
+## Theme Switcher Widget
+
+A floating theme switcher button is automatically added to the bottom-right corner of every page on your site (frontend only).
+
+### How Users Can Use It:
+
+1. **Click the floating button** (🎨 icon) in the bottom-right corner
+2. **Theme panel opens** showing:
+   - Mode selector (Auto / Light / Dark)
+   - All available default themes
+   - All custom themes created by admins
+3. **Select a mode** to switch between auto-detection, light, or dark preference
+4. **Click any theme** to instantly apply it
+5. The selected theme is **saved automatically** and persists across page loads
+
+## Alternative: Shortcode
+
+You can also place a theme switcher button anywhere in your content using a shortcode.
+
+### Usage:
+
+Add this shortcode to any page, post, or widget:
+
+```
+[theme_changer_theme_switcher]
+```
+
+Or for an inline button style:
+
+```
+[theme_changer_theme_switcher style="inline"]
+```
+
+### Example:
+
+Place this in a WordPress page:
+
+```
+Welcome to our site!
+
+[theme_changer_theme_switcher style="inline"]
+
+You can customize the appearance using the button above.
+```
+
+## What Changed
+
+### Before:
+- Theme data was not passed to frontend JavaScript
+- Theme list showed "Themes loaded from server" placeholder
+- Users couldn't actually select themes
+
+### After:
+- ✅ All default themes are loaded and displayed
+- ✅ All custom themes are loaded and displayed
+- ✅ Current active theme is highlighted
+- ✅ Theme selection works via AJAX
+- ✅ Theme preference is saved for each user
+- ✅ Themes apply instantly without page reload (via AJAX)
+
+## Technical Details
+
+The following changes were made:
+
+1. **dark.php** - Theme data now passed to JavaScript via `wp_localize_script`
+2. **theme-switcher.js** - Properly loads and renders all available themes
+3. **style.css** - Enhanced styling for theme list headings
+4. Added **shortcode support** for flexible placement
+
+## Testing
+
+1. **As a non-admin user**, visit your site's frontend
+2. Look for the **floating button** in the bottom-right corner
+3. Click it to open the theme panel
+4. Try switching modes and themes
+5. Refresh the page - your selection should persist
+
+That's it! Users can now fully control the site's appearance from the frontend. 🎉
