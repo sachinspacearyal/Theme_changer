@@ -42,6 +42,18 @@ Yes, it injects CSS custom properties that work with most modern themes.
 Yes, you can use the shortcode for manual placement or disable it in settings (coming soon).
 
 == Screenshots ==
+1.src\screenshot-1770778757207.png
+
+2.src\screenshot-1770778787588.png
+
+3.src\screenshot-1770778807459.png
+
+4.src\screenshot-1770778839937.png
+
+5.src\screenshot-1770778878632.png
+
+6.src\screenshot-1770778895837.png
+
 
 1. Admin Settings Page - Manage and create themes.
 2. Frontend Switcher - Floating widget on the site.
