@@ -42,17 +42,17 @@ Yes, it injects CSS custom properties that work with most modern themes.
 Yes, you can use the shortcode for manual placement or disable it in settings (coming soon).
 
 == Screenshots ==
-1.![image](src\screenshot-1770778757207.png)
+1. ![Plugin Screenshot 1](src\screenshot-1770778757207.png)
 
-2.![image](src\screenshot-1770778787588.png)
+2. ![Plugin Screenshot 2](src\screenshot-1770778787588.png)
 
-3.![image](src\screenshot-1770778807459.png)
+3. ![Plugin Screenshot 3](src\screenshot-1770778807459.png)
 
-4.![image](src\screenshot-1770778839937.png)   
+4. ![Plugin Screenshot 4](src\screenshot-1770778839937.png)   
 
-5.![image](src\screenshot-1770778878632.png)
+5. ![Plugin Screenshot 5](src\screenshot-1770778878632.png)
 
-6.![image](src\screenshot-1770778895837.png)
+6. ![Plugin Screenshot 6](src\screenshot-1770778895837.png)
 
 
 1. Admin Settings Page - Manage and create themes.
